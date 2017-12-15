@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface UnitOfMeasureRepository extends CrudRepository<UnitOfMeasure, Long> {
 
+    /** Spring JDBC will auto-generate this method! */
     Optional<UnitOfMeasure> findByDescription(String description);
 }
