@@ -3,6 +3,7 @@ package ca.wendyliu.spring5recipeapp.domain;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,7 @@ public class Recipe {
     private String source;
     private String url;
 
+    /** Large object annotation allows us to store more than 255 chars! */
     @Lob
     private String directions;
 
@@ -30,7 +32,7 @@ public class Recipe {
 
     // We want Recipe to own Ingredients
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     @Lob
     private Byte[] image;
@@ -44,7 +46,7 @@ public class Recipe {
     @JoinTable(name = "recipe_category",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
     public Long getId() {
         return id;
