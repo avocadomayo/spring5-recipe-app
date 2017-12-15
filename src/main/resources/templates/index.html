@@ -5,6 +5,27 @@
     <title>Recipe Home</title>
 </head>
 <body>
-<h1>Recipe Book. fdsa!!!</h1>
+<h1>Recipe Book</h1>
+
+<table>
+    <tr>
+        <th>Description</th>
+        <th>Difficulty</th>
+        <th>Directions</th>
+        <th>Preparation time</th>
+        <th>Servings</th>
+        <th>Source</th>
+        <th>URL</th>
+    </tr>
+    <tr th:each="recipe : ${recipes}">
+        <td th:text="${recipe.description}">Recipe name placeholder</td>
+        <td th:text="${recipe.difficulty}">Easy</td>
+        <td th:text="${recipe.directions}">Do these steps!</td>
+        <td th:text="${recipe.prepTime}">5</td>
+        <td th:text="${recipe.servings}">2</td>
+        <td th:text="${recipe.source}">AllRecipes</td>
+        <td th:text="${recipe.url}">URL here</td>
+    </tr>
+</table>
 </body>
 </html>
