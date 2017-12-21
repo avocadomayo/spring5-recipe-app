@@ -6,6 +6,7 @@ import ca.wendyliu.spring5recipeapp.repository.RecipeRepository;
 import ca.wendyliu.spring5recipeapp.repository.UnitOfMeasureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +14,15 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Component
-public class DevBootStrap implements ApplicationListener<ContextRefreshedEvent> {
+@Profile("default")
+public class DevBootStrapDefault implements ApplicationListener<ContextRefreshedEvent> {
 
     private RecipeRepository recipeRepository;
     private CategoryRepository categoryRepository;
     private UnitOfMeasureRepository unitOfMeasureRepository;
 
     @Autowired
-    public DevBootStrap(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository, CategoryRepository categoryRepository) {
+    public DevBootStrapDefault(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository, CategoryRepository categoryRepository) {
         this.recipeRepository = recipeRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.categoryRepository = categoryRepository;
@@ -32,7 +34,7 @@ public class DevBootStrap implements ApplicationListener<ContextRefreshedEvent> 
     }
 
     private void initRecipeData() {
-        // Get UoM data initialized in data.sql
+        // Get UoM data initialized in data-h2.sql
         Optional<UnitOfMeasure> tspOpt = unitOfMeasureRepository.findByDescription("Teaspoon");
         if (!tspOpt.isPresent()) {
             throw new RuntimeException("Expected UoM not found.");
@@ -58,7 +60,7 @@ public class DevBootStrap implements ApplicationListener<ContextRefreshedEvent> 
         UnitOfMeasure dash = dashOpt.get();
         UnitOfMeasure piece = pieceOpt.get();
 
-        // Get Category data initialized in data.sql
+        // Get Category data initialized in data-h2.sql
         Optional<Category> mexicanOpt = categoryRepository.findByDescription("Mexican");
         if (!mexicanOpt.isPresent()) {
             throw new RuntimeException("Expected Category not found.");
