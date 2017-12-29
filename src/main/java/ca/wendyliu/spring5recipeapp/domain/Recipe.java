@@ -112,7 +112,6 @@ public class Recipe {
         this.directions = directions;
     }
 
-
     public Difficulty getDifficulty() {
         return difficulty;
     }
@@ -120,7 +119,6 @@ public class Recipe {
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
-
 
     public Byte[] getImage() {
         return image;
@@ -136,6 +134,12 @@ public class Recipe {
 
     public void setNotes(Notes notes) {
         this.notes = notes;
+    }
+
+    public Recipe addIngredient(Ingredient ingredient) {
+        ingredient.setRecipe(this);
+        ingredients.add(ingredient);
+        return this;
     }
 
     public Set<Ingredient> getIngredients() {
