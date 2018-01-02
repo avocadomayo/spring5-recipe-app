@@ -4,17 +4,20 @@ import ca.wendyliu.spring5recipeapp.domain.*;
 import ca.wendyliu.spring5recipeapp.repository.CategoryRepository;
 import ca.wendyliu.spring5recipeapp.repository.RecipeRepository;
 import ca.wendyliu.spring5recipeapp.repository.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 @Component
 @Profile("default")
+@Slf4j
 public class RecipeBootStrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private RecipeRepository recipeRepository;
@@ -29,7 +32,9 @@ public class RecipeBootStrap implements ApplicationListener<ContextRefreshedEven
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        log.debug("onApplicationEvent triggered");
         recipeRepository.saveAll(initRecipeData());
     }
 
