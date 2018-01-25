@@ -1,5 +1,7 @@
 package ca.wendyliu.spring5recipeapp.service;
 
+import ca.wendyliu.spring5recipeapp.converters.RecipeCommandToRecipe;
+import ca.wendyliu.spring5recipeapp.converters.RecipeToRecipeCommand;
 import ca.wendyliu.spring5recipeapp.domain.Recipe;
 import ca.wendyliu.spring5recipeapp.repository.RecipeRepository;
 import org.junit.Before;
@@ -23,10 +25,16 @@ public class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
