@@ -2,7 +2,9 @@ package ca.wendyliu.spring5recipeapp.converters;
 
 import ca.wendyliu.spring5recipeapp.commands.RecipeCommand;
 import ca.wendyliu.spring5recipeapp.domain.Recipe;
+import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -10,18 +12,20 @@ import java.util.stream.Collectors;
 @Component
 public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
-    private final IngredientCommandToIngredient ingredientCommandToIngredientConverter;
-    private final NotesCommandToNotes notesCommandToNotesConverter;
-    private final CategoryCommandToCategory categoryCommandToCategoryConverter;
+    private final IngredientCommandToIngredient ingredientConverter;
+    private final NotesCommandToNotes notesConverter;
+    private final CategoryCommandToCategory categoryConverter;
 
-    public RecipeCommandToRecipe(IngredientCommandToIngredient ingredientCommandToIngredientConverter,
-                                 NotesCommandToNotes notesCommandToNotesConverter,
-                                 CategoryCommandToCategory categoryCommandToCategoryConverter) {
-        this.ingredientCommandToIngredientConverter = ingredientCommandToIngredientConverter;
-        this.notesCommandToNotesConverter = notesCommandToNotesConverter;
-        this.categoryCommandToCategoryConverter = categoryCommandToCategoryConverter;
+    public RecipeCommandToRecipe(IngredientCommandToIngredient ingredientConverter,
+                                 NotesCommandToNotes notesConverter,
+                                 CategoryCommandToCategory categoryConverter) {
+        this.ingredientConverter = ingredientConverter;
+        this.notesConverter = notesConverter;
+        this.categoryConverter = categoryConverter;
     }
 
+    @Synchronized
+    @Nullable
     @Override
     public Recipe convert(RecipeCommand source) {
         if (source == null) {
@@ -40,15 +44,15 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
         recipe.setIngredients(
                 source.getIngredients()
                 .stream()
-                .map(ingredientCommandToIngredientConverter::convert)
+                .map(ingredientConverter::convert)
                 .collect(Collectors.toSet())
         );
         recipe.setDifficulty(source.getDifficulty());
-        recipe.setNotes(notesCommandToNotesConverter.convert(source.getNotes()));
+        recipe.setNotes(notesConverter.convert(source.getNotes()));
         recipe.setCategories(
                 source.getCategories()
                 .stream()
-                .map(categoryCommandToCategoryConverter::convert)
+                .map(categoryConverter::convert)
                 .collect(Collectors.toSet())
         );
         return recipe;

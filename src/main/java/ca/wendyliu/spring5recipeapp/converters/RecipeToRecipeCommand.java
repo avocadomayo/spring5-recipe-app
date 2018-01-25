@@ -2,7 +2,9 @@ package ca.wendyliu.spring5recipeapp.converters;
 
 import ca.wendyliu.spring5recipeapp.commands.RecipeCommand;
 import ca.wendyliu.spring5recipeapp.domain.Recipe;
+import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -22,6 +24,8 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
         this.categoryToCategoryCommandConverter = categoryToCategoryCommandConverter;
     }
 
+    @Synchronized
+    @Nullable
     @Override
     public RecipeCommand convert(Recipe source) {
         if (source == null) {
