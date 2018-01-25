@@ -1,10 +1,14 @@
 package ca.wendyliu.spring5recipeapp.service;
 
+import ca.wendyliu.spring5recipeapp.commands.RecipeCommand;
+import ca.wendyliu.spring5recipeapp.converters.RecipeCommandToRecipe;
+import ca.wendyliu.spring5recipeapp.converters.RecipeToRecipeCommand;
 import ca.wendyliu.spring5recipeapp.domain.Recipe;
 import ca.wendyliu.spring5recipeapp.repository.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,11 +24,18 @@ import java.util.Set;
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final RecipeCommandToRecipe recipeCommandToRecipe;
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
 
     @Autowired
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository,
+                             RecipeCommandToRecipe recipeCommandToRecipe,
+                             RecipeToRecipeCommand recipeToRecipeCommand) {
         this.recipeRepository = recipeRepository;
+        this.recipeCommandToRecipe = recipeCommandToRecipe;
+        this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
+
 
     public Set<Recipe> getAllRecipes() {
         // enabled by @Slf4j
@@ -44,5 +55,18 @@ public class RecipeServiceImpl implements RecipeService {
         }
 
         return recipeOptional.get();
+    }
+
+    //
+    @Override
+    @Transactional
+    public RecipeCommand saveRecipeCommand(RecipeCommand command) {
+        // Still a POJO, detached from Hibernate context
+        Recipe detachedRecipe = recipeCommandToRecipe.convert(command);
+
+        // Now saved in Hibernate
+        Recipe savedRecipe = recipeRepository.save(detachedRecipe);
+        log.debug("Saved Recipe ID: {} ", savedRecipe.getId());
+        return recipeToRecipeCommand.convert(savedRecipe);
     }
 }
