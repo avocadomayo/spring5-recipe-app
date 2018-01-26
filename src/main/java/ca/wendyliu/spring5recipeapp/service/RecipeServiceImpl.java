@@ -57,7 +57,7 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeOptional.get();
     }
 
-    //
+    // transactional, to avoid exception if we hit any lazily-loaded property
     @Override
     @Transactional
     public RecipeCommand saveRecipeCommand(RecipeCommand command) {
@@ -68,5 +68,11 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe savedRecipe = recipeRepository.save(detachedRecipe);
         log.debug("Saved Recipe ID: {} ", savedRecipe.getId());
         return recipeToRecipeCommand.convert(savedRecipe);
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand findCommandById(Long id) {
+        return recipeToRecipeCommand.convert(findById(id));
     }
 }

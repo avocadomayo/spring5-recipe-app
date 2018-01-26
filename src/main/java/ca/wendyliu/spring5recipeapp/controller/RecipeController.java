@@ -32,7 +32,12 @@ public class RecipeController {
         return "recipe/recipe_form";
     }
 
+    @RequestMapping("recipe/{id}/update")
+    public String updateRecipe(@PathVariable String id, Model model) {
+        model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
 
+        return "recipe/recipe_form";
+    }
 
     // both annotations are required, as we are doing a POST & a GET to the show recipe page
     @PostMapping
