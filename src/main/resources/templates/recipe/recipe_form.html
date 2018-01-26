@@ -22,6 +22,7 @@
     <div class="row">
         <!-- Bootstrap uses a 12-column grid. Here, we tell it to use 6 with offsets of 3 on either side. -->
         <div class="col-md-6 col-md-offset-3">
+            <!-- here we tell Spring to do a form-POST against the URL /recipe -->
             <form th:object="${recipe}" th:action="@{/recipe/}">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="panel-group">
