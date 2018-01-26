@@ -18,7 +18,7 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @RequestMapping("/recipe/show/{id}")
+    @RequestMapping("/recipe/{id}/show")
     public String showById(@PathVariable String id, Model model) {
         model.addAttribute("recipe", recipeService.findById(new Long(id)));
 
@@ -32,6 +32,8 @@ public class RecipeController {
         return "recipe/recipe_form";
     }
 
+
+
     // both annotations are required, as we are doing a POST & a GET to the show recipe page
     @PostMapping
     @RequestMapping("recipe")
@@ -40,6 +42,6 @@ public class RecipeController {
 
         // this command tells Spring MVC to redirect to a specific URL.
         // so this means after we save a recipe, redirect to show this new recipe.
-        return "redirect:/recipe/show/" + savedCommand.getId();
+        return "redirect:/recipe/" + savedCommand.getId() + "/show";
     }
 }
