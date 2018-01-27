@@ -66,4 +66,19 @@ public class RecipeServiceImplTest {
         // Check repository's findAll() method is only called 3 times
         verify(recipeRepository, times(1)).findAll();
     }
+
+    @Test
+    public void testDeleteById() throws Exception {
+        // given
+        Long id = 2L;
+
+        // when
+        recipeService.deleteById(id);
+
+        // no 'when' as this method has return type of void
+        // let's just verify that it invoked
+
+        // then
+        verify(recipeRepository, times(1)).deleteById(anyLong());
+    }
 }
