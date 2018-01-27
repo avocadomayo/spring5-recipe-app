@@ -2,13 +2,12 @@ package ca.wendyliu.spring5recipeapp.controller;
 
 import ca.wendyliu.spring5recipeapp.commands.RecipeCommand;
 import ca.wendyliu.spring5recipeapp.service.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
 public class RecipeController {
 
@@ -48,5 +47,16 @@ public class RecipeController {
         // this command tells Spring MVC to redirect to a specific URL.
         // so this means after we save a recipe, redirect to show this new recipe.
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
+    }
+
+    // good practice, since we're only limiting the actions performable to /recipe/{id}/delete to GET
+    @GetMapping
+    @RequestMapping("recipe/{id}/delete")
+    public String deleteById(@PathVariable String id) {
+        log.debug("Deleting id: " + id);
+
+        recipeService.deleteById(Long.valueOf(id));
+
+        return "redirect:/";
     }
 }
