@@ -19,7 +19,7 @@ public class IngredientToIngredientCommandTest {
     private static final Long UOM_ID = 2L;
     private static final String DESCRIPTION = "hello!";
     private static final BigDecimal BIG_DECIMAL_VALUE = BigDecimal.TEN;
-    private static final Recipe RECIPE = new Recipe();
+    private static final Long RECIPE_ID = 3L;
 
     IngredientToIngredientCommand converter;
 
@@ -45,6 +45,10 @@ public class IngredientToIngredientCommandTest {
         ingredient.setDescription(DESCRIPTION);
         ingredient.setAmount(BIG_DECIMAL_VALUE);
 
+        Recipe recipe = new Recipe();
+        recipe.setId(RECIPE_ID);
+        ingredient.setRecipe(recipe);
+
         UnitOfMeasure uom = new UnitOfMeasure();
         uom.setId(UOM_ID);
         ingredient.setUom(uom);
@@ -56,6 +60,7 @@ public class IngredientToIngredientCommandTest {
         assertEquals(DESCRIPTION, command.getDescription());
         assertEquals(BIG_DECIMAL_VALUE, command.getAmount());
         assertEquals(UOM_ID, command.getUom().getId());
+        assertEquals(RECIPE_ID, command.getRecipeId());
         // TODO: What to do about RECIPE?
     }
 
