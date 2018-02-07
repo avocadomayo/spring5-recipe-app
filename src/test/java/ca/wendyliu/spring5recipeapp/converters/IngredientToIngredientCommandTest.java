@@ -61,7 +61,6 @@ public class IngredientToIngredientCommandTest {
         assertEquals(BIG_DECIMAL_VALUE, command.getAmount());
         assertEquals(UOM_ID, command.getUom().getId());
         assertEquals(RECIPE_ID, command.getRecipeId());
-        // TODO: What to do about RECIPE?
     }
 
     @Test
